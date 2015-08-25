@@ -8,6 +8,8 @@ Implements fuzzy control in one degree of freedom.
 ### Libraries
 # Standard libraries
 import numpy as np
+from operator import add
+import itertools
 
 # Third-party libraries
 import skfuzzy as fuzz
@@ -39,10 +41,10 @@ class Fuzzy(pid.PID):
             io_ranges - Range of io variables i.e, error, delta_e and control_output [not values] 
         """     
         
-        self.error    = 0
-        self.delta_e  = 0
-        self.mf_types = mf_types       
-        self.f_ssets  = f_ssets     
+        self.error     = 0
+        self.delta_e   = 0
+        self.mf_types  = mf_types       
+        self.f_ssets   = f_ssets     
         self.io_ranges = []    
         
     def run(self):
@@ -75,17 +77,32 @@ class Fuzzy(pid.PID):
         inputs = [ np.arange(var[0], var[1]+1, 1) for var in self.io_ranges]
         b  = []
         for i in range(3) :
-                b.append( [membership_f(self.mf_types[i], inputs[i], a) for a in self.f_ssets[i] ])
+            a = []
+            for j in range(len(self.f_ssets[i])):
+                a.append(membership_f(self.mf_types[i], inputs[i], self.f_ssets[i][j]) )
+                # print membership_f(self.mf_types[i], inputs[i], self.f_ssets[i][j])
+                x = []
+                if j==0 or j== (len(self.f_ssets[i])-1):
+                    for y in range(self.io_ranges[i][0],self.io_ranges[i][1]+1,1):
+                        if y < self.f_ssets[i][j][1]:
+                            x.append(1 - j/(len(self.f_ssets[i])-1))
+                        elif y == self.f_ssets[i][j][1]:
+                            x.append(0)
+                        else:
+                            x.append(j/(len(self.f_ssets[i])-1))
+                    a[j] = np.array(map(add,a[j],x))
+            b.append(a)
+        visualize.visualize_mf(b,inputs)
 
-        # visualize.visualize_mf(b,inputs)
         # fuzzify Error and delta error to obtain their membership values for corr. fuzzy subsets
         muval_e  = fuzzify(inputs[0], b[0], self.error)
         muval_de = fuzzify(inputs[1], b[1], self.delta_e) 
-
         # print 'muval_e:', muval_e
         # print 'muval_de:', muval_de
+
         # Obtain the rule strength matrix
         f_mat = fuzzy_matrix(muval_e, muval_de)
+        
         #  obtian the y value clipped by output activation for output fuzzy subsets
         output = rule_base(b, f_mat)
         aggregated = np.fmax(output[0], np.fmax(output[1],np.fmax(output[2], np.fmax(output[3], output[4]))))
@@ -93,7 +110,7 @@ class Fuzzy(pid.PID):
         # print "output:",out_final
         # plotting final output
         # visualize.visualize_output(b, inputs, output, out_final, aggregated)
-        # plt.show()
+        plt.show()
 	return out_final
 
 def membership_f(mf, x, abc = [0,0,0], a = 1, b = 2, c = 3, d = 4, abcd = [0,0,0,0]):
@@ -123,7 +140,7 @@ def fuzzify(Input, y, crisp_val):
     """
     Fuzzifies crisp value to obtain their membership values for corr. fuzzy subsets.
     arguments:
-        Input - Range of crisp_val i.e, list of x values discrete values which crisp_val can take
+        Input - Range of crisp_val i.e, list of discrete x values which crisp_val can take
         y     - 2d list containing y values of each fuzzy subsets of an i/o variable
         crisp_val - value to be fuzzified
     """

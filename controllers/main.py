@@ -1,19 +1,20 @@
 import fuzzy
+
 # yapf: disable
 f_ssets = [[ # error
-            [-180,-180,30],   # -ve medium   
-            [-60,-30 , 0],    # -ve small
-            [-30 , 0 , 30],   # zero
-            [ 0 , 30 , 60],   # +ve small
-            [ 30 ,180 , 180], # +ve medium
+            [-45,-45,-10], # -ve medium   
+            [-45,-10 , 0], # -ve small
+            [-10, 0  ,10], # zero
+            [ 0 , 10 ,45], # +ve small
+            [ 10, 45 ,45], # +ve medium
            ],        
             # delta_error
            [          
-            [-180,-180,30],   # -ve medium
-            [-60,-30 , 0],    # -ve small
-            [-30 , 0 , 30],   # zero
-            [ 0 , 30 , 60],   # +ve small
-            [ 30 ,180 , 180], # +ve medium
+            [-45,-45,-10], # -ve medium   
+            [-45,-10 , 0], # -ve small
+            [-10, 0  ,10], # zero
+            [ 0 , 10 ,45], # +ve small
+            [ 10, 45 ,45], # +ve medium
            ],              
             # u
            [                 
@@ -36,10 +37,11 @@ io_ranges = [  # range of e
 
 mf_types = ['trimf','trimf','trimf']
 
+
 def main():
   x = fuzzy.Fuzzy(mf_types, f_ssets)
-  x.error = 2.5
-  x.delta_e = 0 
+  x.error = -10
+  x.delta_e = -10
   x.io_ranges = io_ranges
   print x.run() 
 

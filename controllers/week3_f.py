@@ -11,20 +11,19 @@ import math
 import numpy
 from fuzzy import Fuzzy
 
-f_ssets = [[ # error
-            [-180,-180,30],   # -ve medium   
-            [-60,-30 , 0],    # -ve small
-            [-30 , 0 , 30],   # zero
-            [ 0 , 30 , 60],   # +ve small
-            [ 30 ,180 , 180], # +ve medium
+f_ssets =  [[-45,-45,-10], # -ve medium   
+            [-45,-10 , 0], # -ve small
+            [-10, 0  ,10], # zero
+            [ 0 , 10 ,45], # +ve small
+            [ 10, 45 ,45], # +ve medium
            ],        
             # delta_error
            [          
-            [-180,-180,30],   # -ve medium
-            [-60,-30 , 0],    # -ve small
-            [-30 , 0 , 30],   # zero
-            [ 0 , 30 , 60],   # +ve small
-            [ 30 ,180 , 180], # +ve medium
+            [-45,-45,-10], # -ve medium   
+            [-45,-10 , 0], # -ve small
+            [-10, 0  ,10], # zero
+            [ 0 , 10 ,45], # +ve small
+            [ 10, 45 ,45], # +ve medium
            ],              
             # u
            [                 
@@ -46,6 +45,42 @@ io_ranges = [  # range of e
             ]
 
 mf_types = ['trimf','trimf','trimf']
+
+# [[ # error
+#             [-10,-10,5],   # -ve medium   
+#             [-60,-30 , 0],    # -ve small
+#             [-30 , 0 , 30],   # zero
+#             [ 0 , 30 , 60],   # +ve small
+#             [ 30 ,180 , 180], # +ve medium
+#            ],        
+#             # delta_error
+#            [          
+#             [-180,-180,30],   # -ve medium
+#             [-60,-30 , 0],    # -ve small
+#             [-30 , 0 , 30],   # zero
+#             [ 0 , 30 , 60],   # +ve small
+#             [ 30 ,180 , 180], # +ve medium
+#            ],              
+#             # u
+#            [                 
+#             [-10,-10,-5],  # -ve medium
+#             [-10,-5 , 0],  # -ve small
+#             [-5 , 0 , 5],  # zero
+#             [ 0 , 5 , 10], # +ve small
+#             [ 5 ,10 , 10], # +ve medium
+#            ] 
+#           ]
+# yapf: enable
+
+# io_ranges = [  # range of e
+#               [-10,10],
+#                # range of d_e
+#               [-10,10],
+#                # range of u
+#               [-10,10]
+#             ]
+
+# mf_types = ['trimf','trimf','trimf']
 
 class GoToGoal(Controller):
     """Go-to-goal steers the robot to a predefined position in the world."""
@@ -111,7 +146,8 @@ class GoToGoal(Controller):
         # error between the heading angle and robot's angle
         x_r, y_r, theta = state.pose
         e_k = self.heading_angle - theta;
-        # e_k = numpy.arctan2(math.sin(e_k)/math.cos(e_k));
+        # e_k = numpy.arctan2(numpy.sin(e_k),numpy.cos(e_k))* 180 / numpy.pi
+        e_k = numpy.arctan2(numpy.sin(e_k),numpy.cos(e_k))
 
         # error for the proportional term
         self.yaw.error = e_k

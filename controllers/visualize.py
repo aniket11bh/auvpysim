@@ -15,7 +15,7 @@ def visualize_mf(b, inputs):
     ax0.plot(inputs[0], b[0][3], 'm', linewidth=1.5, label= '+ve small')
     ax0.plot(inputs[0], b[0][4], 'y', linewidth=1.5, label= '+ve Medium')
     ax0.set_title('Error')
-    ax0.legend()
+    # ax0.legend()
 
     ax1.plot(inputs[1], b[1][0], 'g', linewidth=1.5, label= '-ve Medium')
     ax1.plot(inputs[1], b[1][1], 'r', linewidth=1.5, label= '-ve small')
@@ -23,7 +23,7 @@ def visualize_mf(b, inputs):
     ax1.plot(inputs[1], b[1][3], 'm', linewidth=1.5, label= '+ve small')
     ax1.plot(inputs[1], b[1][4], 'y', linewidth=1.5, label= '+ve Medium')
     ax1.set_title('Del_Error')
-    ax1.legend()
+    # ax1.legend()
   
     ax2.plot(inputs[2], b[2][0], 'g', linewidth=1.5, label= '-ve Medium')
     ax2.plot(inputs[2], b[2][1], 'r', linewidth=1.5, label= '-ve small')
@@ -31,7 +31,7 @@ def visualize_mf(b, inputs):
     ax2.plot(inputs[2], b[2][3], 'm', linewidth=1.5, label= '+ve small')
     ax2.plot(inputs[2], b[2][4], 'y', linewidth=1.5, label= '+ve Medium')
     ax2.set_title('Output')
-    ax2.legend()
+    # ax2.legend()
 
     # Turn off top/right axes
     for ax in (ax0, ax1, ax2):
