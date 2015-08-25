@@ -11,11 +11,12 @@ import math
 import numpy
 from fuzzy import Fuzzy
 
-f_ssets =  [[-45,-45,-10], # -ve medium   
-            [-45,-10 , 0], # -ve small
-            [-10, 0  ,10], # zero
-            [ 0 , 10 ,45], # +ve small
-            [ 10, 45 ,45], # +ve medium
+f_ssets = [[
+            [-60,-60,-30], # -ve medium   
+            [-60,-30 , 0], # -ve small
+            [-30, 0  ,30], # zero
+            [ 0 , 30 ,60], # +ve small
+            [ 30, 60 ,60], # +ve medium
            ],        
             # delta_error
            [          
@@ -27,11 +28,11 @@ f_ssets =  [[-45,-45,-10], # -ve medium
            ],              
             # u
            [                 
-            [-10,-10,-5],  # -ve medium
-            [-10,-5 , 0],  # -ve small
-            [-5 , 0 , 5],  # zero
-            [ 0 , 5 , 10], # +ve small
-            [ 5 ,10 , 10], # +ve medium
+            [-5,-5,-1],  # -ve medium
+            [-5,-1 , 0],  # -ve small
+            [-1, 0 ,1],  # zero
+            [ 0 ,1 ,5], # +ve small
+            [ 1 ,5,5], # +ve medium
            ] 
           ]
 # yapf: enable
@@ -41,7 +42,7 @@ io_ranges = [  # range of e
                # range of d_e
               [-180,180],
                # range of u
-              [-10,10]
+              [-20,20]
             ]
 
 mf_types = ['trimf','trimf','trimf']

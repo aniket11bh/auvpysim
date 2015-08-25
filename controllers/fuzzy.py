@@ -92,7 +92,7 @@ class Fuzzy(pid.PID):
                             x.append(j/(len(self.f_ssets[i])-1))
                     a[j] = np.array(map(add,a[j],x))
             b.append(a)
-        visualize.visualize_mf(b,inputs)
+        # visualize.visualize_mf(b,inputs)
 
         # fuzzify Error and delta error to obtain their membership values for corr. fuzzy subsets
         muval_e  = fuzzify(inputs[0], b[0], self.error)
@@ -110,7 +110,7 @@ class Fuzzy(pid.PID):
         # print "output:",out_final
         # plotting final output
         # visualize.visualize_output(b, inputs, output, out_final, aggregated)
-        plt.show()
+        # plt.show()
 	return out_final
 
 def membership_f(mf, x, abc = [0,0,0], a = 1, b = 2, c = 3, d = 4, abcd = [0,0,0,0]):
