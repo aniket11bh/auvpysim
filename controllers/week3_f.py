@@ -28,11 +28,11 @@ f_ssets = [[
            ],              
             # u
            [                 
-            [-5,-5,-1],  # -ve medium
-            [-5,-1 , 0],  # -ve small
-            [-1, 0 ,1],  # zero
-            [ 0 ,1 ,5], # +ve small
-            [ 1 ,5,5], # +ve medium
+            [-5,-5,-2.5],  # -ve medium
+            [-5,-2.5 , 0],  # -ve small
+            [-2.5, 0 ,2.5],  # zero
+            [ 0 ,2.5 ,5], # +ve small
+            [ 2.5 ,5 , 5], # +ve medium
            ] 
           ]
 # yapf: enable
@@ -42,7 +42,7 @@ io_ranges = [  # range of e
                # range of d_e
               [-180,180],
                # range of u
-              [-20,20]
+              [-5,5]
             ]
 
 mf_types = ['trimf','trimf','trimf']
@@ -147,8 +147,8 @@ class GoToGoal(Controller):
         # error between the heading angle and robot's angle
         x_r, y_r, theta = state.pose
         e_k = self.heading_angle - theta;
-        # e_k = numpy.arctan2(numpy.sin(e_k),numpy.cos(e_k))* 180 / numpy.pi
-        e_k = numpy.arctan2(numpy.sin(e_k),numpy.cos(e_k))
+        e_k = numpy.arctan2(numpy.sin(e_k),numpy.cos(e_k))* 180 / numpy.pi
+        # e_k = numpy.arctan2(numpy.sin(e_k),numpy.cos(e_k))
 
         # error for the proportional term
         self.yaw.error = e_k
@@ -163,6 +163,7 @@ class GoToGoal(Controller):
         # error for this time step, e_k.
         self.yaw.delta_e = (e_k - self.e_k_1)/dt
         w_ = self.yaw.run() 
+        print "output : ",w_,"Error : ",e_k
 
         # w_ = self.kp*e_P+ self.ki*e_I + self.kd*e_D
         

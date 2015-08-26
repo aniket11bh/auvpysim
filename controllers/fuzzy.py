@@ -93,8 +93,13 @@ class Fuzzy(pid.PID):
                     a[j] = np.array(map(add,a[j],x))
             b.append(a)
         # visualize.visualize_mf(b,inputs)
-
-        # fuzzify Error and delta error to obtain their membership values for corr. fuzzy subsets
+        # Ensure that error and delta_e in their io_ranges
+        self.error = self.io_ranges[0][0] if self.error <= self.io_ranges[0][0] else self.error
+        self.error = self.io_ranges[0][1] if self.error >= self.io_ranges[0][1] else self.error
+        self.delta_e = self.io_ranges[1][0] if self.delta_e <= self.io_ranges[1][0] else self.delta_e
+        self.delta_e = self.io_ranges[1][1] if self.delta_e >= self.io_ranges[1][1] else self.delta_e
+        
+        # fuzzify Error and delta error to obtain their membership values for corr. fuzzy subsets        
         muval_e  = fuzzify(inputs[0], b[0], self.error)
         muval_de = fuzzify(inputs[1], b[1], self.delta_e) 
         # print 'muval_e:', muval_e

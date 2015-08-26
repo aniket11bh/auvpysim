@@ -18,11 +18,11 @@ f_ssets = [[ # error
            ],              
             # u
            [                 
-            [-10,-10,-5],  # -ve medium
-            [-10,-5 , 0],  # -ve small
-            [-5 , 0 , 5],  # zero
-            [ 0 , 5 , 10], # +ve small
-            [ 5 ,10 , 10], # +ve medium
+            [-5,-5,-2.5],  # -ve medium
+            [-5,-2.5 , 0],  # -ve small
+            [-2.5 , 0 ,2.5],  # zero
+            [ 0 , 2.5 , 5], # +ve small
+            [ 2.5 ,5 ,5], # +ve medium
            ] 
           ]
 # yapf: enable
@@ -40,8 +40,8 @@ mf_types = ['trimf','trimf','trimf']
 
 def main():
   x = fuzzy.Fuzzy(mf_types, f_ssets)
-  x.error = -10
-  x.delta_e = -10
+  x.error = -20
+  x.delta_e = -20
   x.io_ranges = io_ranges
   print x.run() 
 
