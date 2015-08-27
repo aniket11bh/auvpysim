@@ -90,8 +90,9 @@ class Fuzzy(pid.PID):
                             x.append(0)
                         else:
                             x.append(j/(len(self.f_ssets[i])-1))
-                    a[j] = np.array(map(add,a[j],x))
+                    if self.mf_types[i] == 'trimf' : a[j] = np.array(map(add,a[j],x))
             b.append(a)
+       
         # visualize.visualize_mf(b,inputs)
         # Ensure that error and delta_e in their io_ranges
         self.error = self.io_ranges[0][0] if self.error <= self.io_ranges[0][0] else self.error
@@ -112,34 +113,57 @@ class Fuzzy(pid.PID):
         output = rule_base(b, f_mat)
         aggregated = np.fmax(output[0], np.fmax(output[1],np.fmax(output[2], np.fmax(output[3], output[4]))))
         out_final  = fuzz.defuzz(inputs[2], aggregated, 'centroid')
-        # print "output:",out_final
+
         # plotting final output
         # visualize.visualize_output(b, inputs, output, out_final, aggregated)
         # plt.show()
 	return out_final
 
-def membership_f(mf, x, abc = [0,0,0], a = 1, b = 2, c = 3, d = 4, abcd = [0,0,0,0]):
+
+def membership_f(mf, x, abcd ):
     """
     Returns y values corresponding to type of type of Membership fn.
     arguments:
         mf - string containing type of Membership function
         x  - x axis values
-        abc - list containing triangular edge point x-values
     """
-    return {
-        'trimf'   : fuzz.trimf(x, abc),                                 # trimf(x, abc)
-        'dsigmf'  : fuzz.dsigmf(x, a, b, c, d),                         # dsigmf(x, b1, c1, b2, c2)
-        'gauss2mf': fuzz.gauss2mf(x, a, b, c, d),                       # gauss2mf(x, mean1, sigma1, mean2, sigma2)
-        'gaussmf' : fuzz.gaussmf(x, a, b),                              # gaussmf(x, mean, sigma)
-        'gbellmf' : fuzz.gbellmf(x, a, b, c),                           # gbellmf(x, a, b, c)
-        'piecemf' : fuzz.piecemf(x, abc),                               # piecemf(x, abc)
-        'pimf'    : fuzz.pimf(x, a, b, c, d),                           # pimf(x, a, b, c, d)
-        'psigmf'  : fuzz.psigmf(x, a, b, c, d),                         # psigmf(x, b1, c1, b2, c2)
-        'sigmf'   : fuzz.sigmf(x, a, b),                                # sigmf(x, b, c)
-        'smf'     : fuzz.smf(x, a, b),                                  # smf(x, a, b)
-        'trapmf'  : fuzz.trapmf(x, abcd),                               # trapmf(x, abcd)
-        'zmf'     : fuzz.zmf(x, a, b),                                  # zmf(x, a, b)
-            }[mf]
+    if mf == 'zmf': return fuzz.zmf(x, abcd[0], abcd[1])                                # zmf(x, a, b)
+    elif mf == 'trimf'   : return fuzz.trimf(x, abcd[0:3])                              # trimf(x, abc)
+    elif mf == 'dsigmf'  : return fuzz.dsigmf(x, abcd[0], abcd[1], abcd[2], abcd[3])    # dsigmf(x, b1, c1, b2, c2)
+    elif mf == 'gauss2mf': return fuzz.gauss2mf(x, abcd[0], abcd[1], abcd[2], abcd[3])  # gauss2mf(x, mean1, sigma1, mean2, sigma2)
+    elif mf == 'gaussmf' : return fuzz.gaussmf(x, abcd[0], abcd[1])                     # gaussmf(x, mean, sigma)
+    elif mf == 'gbellmf' : return fuzz.gbellmf(x, abcd[0], abcd[1], abcd[2])            # gbellmf(x, a, b, c)
+    elif mf == 'piecemf' : return fuzz.piecemf(x, abcd[0:3])                            # piecemf(x, abc)
+    elif mf == 'pimf'    : return fuzz.pimf(x, abcd[0], abcd[1], abcd[2], abcd[3])      # pimf(x, a, b, c, d)
+    elif mf == 'psigmf'  : return fuzz.psigmf(x, abcd[0], abcd[1], abcd[2], abcd[3])    # psigmf(x, b1, c1, b2, c2)
+    elif mf == 'sigmf'   : return fuzz.sigmf(x, abcd[0], abcd[1])                       # sigmf(x, b, c)
+    elif mf == 'smf'     : return fuzz.smf(x, abcd[0], abcd[1])                         # smf(x, a, b)
+    elif mf == 'trapmf'  : return fuzz.trapmf(x, abcd)                                  # trapmf(x, abcd)
+    
+
+
+# def membership_f(mf, x, abc = [0,0,0], a = 1, b = 2, c = 3, d = 4, abcd = [0,0,0,0]):
+#     """
+#     Returns y values corresponding to type of type of Membership fn.
+#     arguments:
+#         mf - string containing type of Membership function
+#         x  - x axis values
+#         abc - list containing triangular edge point x-values
+#     """
+#     return {
+#         'trimf'   : fuzz.trimf(x, abc),                                 # trimf(x, abc)
+#         'dsigmf'  : fuzz.dsigmf(x, a, b, c, d),                         # dsigmf(x, b1, c1, b2, c2)
+#         'gauss2mf': fuzz.gauss2mf(x, a, b, c, d),                       # gauss2mf(x, mean1, sigma1, mean2, sigma2)
+#         'gaussmf' : fuzz.gaussmf(x, a, b),                              # gaussmf(x, mean, sigma)
+#         'gbellmf' : fuzz.gbellmf(x, a, b, c),                           # gbellmf(x, a, b, c)
+#         'piecemf' : fuzz.piecemf(x, abc),                               # piecemf(x, abc)
+#         'pimf'    : fuzz.pimf(x, a, b, c, d),                           # pimf(x, a, b, c, d)
+#         'psigmf'  : fuzz.psigmf(x, a, b, c, d),                         # psigmf(x, b1, c1, b2, c2)
+#         'sigmf'   : fuzz.sigmf(x, a, b),                                # sigmf(x, b, c)
+#         'smf'     : fuzz.smf(x, a, b),                                  # smf(x, a, b)
+#         'trapmf'  : fuzz.trapmf(x, abcd),                               # trapmf(x, abcd)
+#         'zmf'     : fuzz.zmf(x, a, b),                                  # zmf(x, a, b)
+#             }[mf]
 
 def fuzzify(Input, y, crisp_val):
     """
