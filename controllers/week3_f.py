@@ -12,66 +12,28 @@ import numpy
 from fuzzy import Fuzzy
 
 ############### fuzzy subset for trimf
-# f_ssets = [[
-#             [-60,-60,-30], # -ve medium   
-#             [-60,-30 , 0], # -ve small
-#             [-30, 0  ,30], # zero
-#             [ 0 , 30 ,60], # +ve small
-#             [ 30, 60 ,60], # +ve medium
-#            ],        
-#             # delta_error
-#            [          
-#             [-45,-45,-10], # -ve medium   
-#             [-45,-10 , 0], # -ve small
-#             [-10, 0  ,10], # zero
-#             [ 0 , 10 ,45], # +ve small
-#             [ 10, 45 ,45], # +ve medium
-#            ],              
-#             # u
-#            [                 
-#             [-3,-3,-1],  # -ve medium
-#             [-3,-1 , 0],  # -ve small
-#             [-1, 0 ,1],  # zero
-#             [ 0 ,1 ,3], # +ve small
-#             [ 1 ,3 ,3], # +ve medium
-#            ] 
-#           ]
-# # yapf: enable
-
-# io_ranges = [  # range of e
-#               [-180,180],
-#                # range of d_e
-#               [-180,180],
-#                # range of u
-#               [-5,5]
-#             ]
-
-# mf_types = ['trimf','trimf','trimf']
-
-################## fuzzy subset for gaussmf
-
-f_ssets = [[ # error
-            [-180,70], # -ve medium   
-            [-50,20], # -ve small
-            [ 0 ,20], # zero
-            [50 ,20], # +ve small
-            [180 ,70], # +ve medium
+f_ssets = [[
+            [-60,-60,-30], # -ve medium   
+            [-60,-30 , 0], # -ve small
+            [-30, 0  ,30], # zero
+            [ 0 , 30 ,60], # +ve small
+            [ 30, 60 ,60], # +ve medium
            ],        
             # delta_error
            [          
-            [-180,70], # -ve medium   
-            [-50,20], # -ve small
-            [ 0 ,20], # zero
-            [50 ,20], # +ve small
-            [180 ,70], # +ve medium
+            [-45,-45,-10], # -ve medium   
+            [-45,-10 , 0], # -ve small
+            [-10, 0  ,10], # zero
+            [ 0 , 10 ,45], # +ve small
+            [ 10, 45 ,45], # +ve medium
            ],              
             # u
            [                 
-            [-3,2], # -ve medium   
-            [-1,2], # -ve small
-            [ 0,1], # zero
-            [ 1,2], # +ve small
-            [ 3,2], # +ve medium           
+            [-3,-3,-1],  # -ve medium
+            [-3,-1 , 0],  # -ve small
+            [-1, 0 ,1],  # zero
+            [ 0 ,1 ,3], # +ve small
+            [ 1 ,3 ,3], # +ve medium
            ] 
           ]
 # yapf: enable
@@ -81,9 +43,47 @@ io_ranges = [  # range of e
                # range of d_e
               [-180,180],
                # range of u
-              [-10,10]
+              [-5,5]
             ]
-mf_types = ['gaussmf','gaussmf','gaussmf']
+
+mf_types = ['trimf','trimf','trimf']
+
+################## fuzzy subset for gaussmf
+
+# f_ssets = [[ # error
+#             [-180,70], # -ve medium   
+#             [-50,20], # -ve small
+#             [ 0 ,20], # zero
+#             [50 ,20], # +ve small
+#             [180 ,70], # +ve medium
+#            ],        
+#             # delta_error
+#            [          
+#             [-180,70], # -ve medium   
+#             [-50,20], # -ve small
+#             [ 0 ,20], # zero
+#             [50 ,20], # +ve small
+#             [180 ,70], # +ve medium
+#            ],              
+#             # u
+#            [                 
+#             [-3,2], # -ve medium   
+#             [-1,2], # -ve small
+#             [ 0,1], # zero
+#             [ 1,2], # +ve small
+#             [ 3,2], # +ve medium           
+#            ] 
+#           ]
+# # yapf: enable
+
+# io_ranges = [  # range of e
+#               [-180,180],
+#                # range of d_e
+#               [-180,180],
+#                # range of u
+#               [-10,10]
+#             ]
+# mf_types = ['gaussmf','gaussmf','gaussmf']
 
 
 class GoToGoal(Controller):
